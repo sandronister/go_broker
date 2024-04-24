@@ -8,7 +8,7 @@ import (
 	"github.com/sandronister/go-broker/pkg"
 )
 
-func (b *Broker) Produce(message *pkg.Message) error {
+func (b *Broker) Produce(message *pkg.SendMessage) error {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": fmt.Sprintf("%s:%s", b.server, strconv.Itoa(b.port))})
 
 	if err != nil {
