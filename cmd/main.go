@@ -28,7 +28,7 @@ func main() {
 		go printMessage(message)
 	}
 
-	err := broker.Consume("myTopic", message)
+	err := broker.Consume("myTopic", "myGroup", message)
 
 	if err != nil {
 		println(err)
