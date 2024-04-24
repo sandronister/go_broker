@@ -17,10 +17,12 @@ func (b *Broker) Produce(message *pkg.SendMessage) error {
 
 	topic := message.TopicPartition
 
+	headers := b.getHeader(message)
+
 	err = p.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: 0},
 		Value:          []byte(message.Value),
-		Headers:        []kafka.Header{{Key: "myTestHeader", Value: []byte(message.Headers)}},
+		Headers:        headers,
 	}, nil)
 
 	if err != nil {

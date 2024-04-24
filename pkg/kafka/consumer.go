@@ -8,10 +8,10 @@ import (
 	"github.com/sandronister/go-broker/pkg"
 )
 
-func (b *Broker) Consume(topic string, message chan<- pkg.ReceiptMessage) error {
+func (b *Broker) Consume(topic string, group string, message chan<- pkg.ReceiptMessage) error {
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": fmt.Sprintf("%s:%s", b.server, strconv.Itoa(b.port)),
-		"group.id":          "myGroup",
+		"group.id":          group,
 		"auto.offset.reset": "earliest",
 	})
 

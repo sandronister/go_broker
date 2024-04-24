@@ -5,7 +5,7 @@ import "time"
 type SendMessage struct {
 	TopicPartition string
 	Value          string
-	Headers        string
+	Headers        []Header
 }
 
 type ReceiptMessage struct {
