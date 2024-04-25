@@ -5,10 +5,10 @@ import (
 	"strconv"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.com/sandronister/go-broker/pkg"
+	"github.com/sandronister/go-broker/pkg/payload"
 )
 
-func (b *Broker) Consume(topic string, group string, message chan<- pkg.ReceiptMessage) error {
+func (b *Broker) Consume(topic string, group string, message chan<- payload.Message) error {
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": fmt.Sprintf("%s:%s", b.server, strconv.Itoa(b.port)),
 		"group.id":          group,
@@ -28,18 +28,19 @@ func (b *Broker) Consume(topic string, group string, message chan<- pkg.ReceiptM
 			return err
 		}
 
-		var headers []string
+		var listHeaders []payload.Header
 
 		for _, h := range msg.Headers {
-			headers = append(headers, fmt.Sprintf("%s: %s", h.Key, string(h.Value)))
+			header := payload.Header{Key: h.Key, Value: string(h.Value)}
+			listHeaders = append(listHeaders, header)
 		}
 
-		message <- pkg.ReceiptMessage{
+		message <- payload.Message{
 			TopicPartition: *msg.TopicPartition.Topic,
 			Value:          msg.Value,
 			Key:            msg.Key,
 			Timestamp:      msg.Timestamp,
-			Headers:        headers,
+			Headers:        listHeaders,
 		}
 
 	}

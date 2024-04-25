@@ -1,11 +1,13 @@
 package main
 
 import (
-	"github.com/sandronister/go-broker/pkg"
+	"fmt"
+
 	"github.com/sandronister/go-broker/pkg/kafka"
+	"github.com/sandronister/go-broker/pkg/payload"
 )
 
-func printMessage(message <-chan pkg.ReceiptMessage) {
+func printMessage(message <-chan payload.Message) {
 	for msg := range message {
 		println("Message Received:")
 		println("TopicPartition: ", msg.TopicPartition)
@@ -13,7 +15,7 @@ func printMessage(message <-chan pkg.ReceiptMessage) {
 		println("Key: ", string(msg.Key))
 
 		for _, h := range msg.Headers {
-			println("Headers: ", h)
+			fmt.Printf("Headers: Key %s, Value %s\n", h.Key, h.Value)
 		}
 	}
 }
@@ -22,7 +24,7 @@ func main() {
 
 	broker := kafka.NewBroker("localhost", 9092)
 
-	message := make(chan pkg.ReceiptMessage)
+	message := make(chan payload.Message)
 
 	for i := 0; i < 10; i++ {
 		go printMessage(message)
@@ -31,7 +33,7 @@ func main() {
 	err := broker.Consume("myTopic", "myGroup", message)
 
 	if err != nil {
-		println(err)
+		panic(err)
 	}
 
 }

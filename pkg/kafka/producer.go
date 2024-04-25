@@ -5,10 +5,10 @@ import (
 	"strconv"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.com/sandronister/go-broker/pkg"
+	"github.com/sandronister/go-broker/pkg/payload"
 )
 
-func (b *Broker) Produce(message *pkg.SendMessage) error {
+func (b *Broker) Produce(message *payload.Message) error {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": fmt.Sprintf("%s:%s", b.server, strconv.Itoa(b.port))})
 
 	if err != nil {

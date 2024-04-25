@@ -2,10 +2,10 @@ package kafka
 
 import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.com/sandronister/go-broker/pkg"
+	"github.com/sandronister/go-broker/pkg/payload"
 )
 
-func (b *Broker) getHeader(message *pkg.SendMessage) []kafka.Header {
+func (b *Broker) getHeader(message *payload.Message) []kafka.Header {
 	var listHeader []kafka.Header
 
 	for _, item := range message.Headers {

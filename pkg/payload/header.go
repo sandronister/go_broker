@@ -1,4 +1,4 @@
-package pkg
+package payload
 
 type Header struct {
 	Key   string
