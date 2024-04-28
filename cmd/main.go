@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/sandronister/go-broker/pkg/connection"
 	"github.com/sandronister/go-broker/pkg/kafka"
 	"github.com/sandronister/go-broker/pkg/payload"
 )
@@ -30,7 +31,10 @@ func main() {
 		go printMessage(message)
 	}
 
-	err := broker.Consume("myTopic", "myGroup", message)
+	err := broker.Consume(connection.ConfigMap{
+		"topic":    "my-topic",
+		"group.id": "my-group",
+	}, message)
 
 	if err != nil {
 		panic(err)
