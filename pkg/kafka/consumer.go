@@ -1,20 +1,17 @@
 package kafka
 
 import (
-	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/sandronister/go-broker/pkg/connection"
 	"github.com/sandronister/go-broker/pkg/payload"
 )
 
 func (b *Broker) Consume(config connection.ConfigMap, message chan<- payload.Message) error {
 
-	c, err := kafka.NewConsumer(b.GetConfig(config))
+	c, err := b.getConsumer(config)
 
 	if err != nil {
 		return err
 	}
-
-	c.SubscribeTopics([]string{config["topic"]}, nil)
 
 	for {
 		msg, err := c.ReadMessage(-1)
