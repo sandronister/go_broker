@@ -9,14 +9,12 @@ import (
 	"github.com/sandronister/go-broker/pkg/payload"
 )
 
-func printMessage(message <-chan payload.Message, inx int) {
+func printMessage(message <-chan payload.Message) {
 	for msg := range message {
 		println("Message Received:")
 		println("TopicPartition: ", msg.TopicPartition)
 		println("Value: ", string(msg.Value))
 		println("Key: ", string(msg.Key))
-
-		fmt.Printf("Index %s\n", strconv.Itoa(inx))
 
 		for _, h := range msg.Headers {
 			fmt.Printf("Headers: Key %s, Value %s\n", h.Key, h.Value)
@@ -34,8 +32,8 @@ func main() {
 
 	message := make(chan payload.Message)
 
-	for i := 0; i < 10; i++ {
-		go printMessage(message, i)
+	for range 10 {
+		go printMessage(message)
 	}
 
 	for i := range 3 {
