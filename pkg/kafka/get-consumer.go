@@ -4,10 +4,9 @@ import (
 	"strconv"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.com/sandronister/go-broker/pkg/connection"
 )
 
-func (b *Broker) getConsumer(config connection.ConfigMap) (*kafka.Consumer, error) {
+func (b *Broker) getConsumer(config ConfigMap) (*kafka.Consumer, error) {
 	c, err := kafka.NewConsumer(b.GetConfig(config))
 
 	if err != nil {

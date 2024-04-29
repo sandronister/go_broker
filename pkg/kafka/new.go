@@ -1,5 +1,7 @@
 package kafka
 
+type ConfigMap map[string]string
+
 type Broker struct {
 	server string
 	port   int
