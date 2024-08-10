@@ -1,6 +1,6 @@
-package pkg
+package ports
 
-import "github.com/sandronister/go-broker/pkg/payload"
+import "github.com/sandronister/go_broker/pkg/payload"
 
 type ConfigMap map[string]string
 
