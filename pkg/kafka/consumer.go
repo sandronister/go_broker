@@ -1,10 +1,11 @@
 package kafka
 
 import (
+	"github.com/sandronister/go-broker/pkg"
 	"github.com/sandronister/go-broker/pkg/payload"
 )
 
-func (b *Broker) Consume(config ConfigMap, message chan<- payload.Message) error {
+func (b *Broker) Consume(config pkg.ConfigMap, message chan<- payload.Message) error {
 
 	c, err := b.getConsumer(config)
 

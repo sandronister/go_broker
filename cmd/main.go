@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/sandronister/go-broker/pkg"
 	"github.com/sandronister/go-broker/pkg/kafka"
 	"github.com/sandronister/go-broker/pkg/payload"
 )
@@ -37,7 +38,7 @@ func main() {
 	}
 
 	for i := range 3 {
-		go broker.Consume(kafka.ConfigMap{
+		go broker.Consume(pkg.ConfigMap{
 			"topic":             "new-topic",
 			"group.id":          "my-group",
 			"auto.offset.reset": "earliest",
