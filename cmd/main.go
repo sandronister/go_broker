@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/sandronister/go-broker/pkg"
 	"github.com/sandronister/go-broker/pkg/kafka"
 	"github.com/sandronister/go-broker/pkg/payload"
-	"github.com/sandronister/go-broker/pkg/ports"
 )
 
 func printMessage(message <-chan payload.Message) {
@@ -38,7 +38,7 @@ func main() {
 	}
 
 	for i := range 3 {
-		go broker.Consume(ports.ConfigMap{
+		go broker.Consume(pkg.ConfigMap{
 			"topic":             "new-topic",
 			"group.id":          "my-group",
 			"auto.offset.reset": "earliest",

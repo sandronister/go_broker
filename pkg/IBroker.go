@@ -1,4 +1,4 @@
-package ports
+package pkg
 
 import "github.com/sandronister/go-broker/pkg/payload"
 

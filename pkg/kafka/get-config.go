@@ -5,10 +5,10 @@ import (
 	"strconv"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.com/sandronister/go-broker/pkg/ports"
+	"github.com/sandronister/go-broker/pkg"
 )
 
-func (b *Broker) GetConfig(config ports.ConfigMap) *kafka.ConfigMap {
+func (b *Broker) GetConfig(config pkg.ConfigMap) *kafka.ConfigMap {
 	if config["group.id"] == "" {
 		config["group.id"] = "default"
 	}
