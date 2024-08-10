@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.com/sandronister/go-broker/pkg"
+	"github.com/sandronister/go_broker/pkg"
 )
 
 func (b *Broker) getConsumer(config pkg.ConfigMap) (*kafka.Consumer, error) {

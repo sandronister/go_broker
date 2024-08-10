@@ -1,8 +1,8 @@
 package kafka
 
 import (
-	"github.com/sandronister/go-broker/pkg"
-	"github.com/sandronister/go-broker/pkg/payload"
+	"github.com/sandronister/go_broker/pkg"
+	"github.com/sandronister/go_broker/pkg/payload"
 )
 
 func (b *Broker) Consume(config pkg.ConfigMap, message chan<- payload.Message) error {

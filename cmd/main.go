@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/sandronister/go-broker/pkg"
-	"github.com/sandronister/go-broker/pkg/kafka"
-	"github.com/sandronister/go-broker/pkg/payload"
+	"github.com/sandronister/go_broker/pkg"
+	"github.com/sandronister/go_broker/pkg/kafka"
+	"github.com/sandronister/go_broker/pkg/payload"
 )
 
 func printMessage(message <-chan payload.Message) {

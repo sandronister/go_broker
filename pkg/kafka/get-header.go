@@ -2,7 +2,7 @@ package kafka
 
 import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.com/sandronister/go-broker/pkg/payload"
+	"github.com/sandronister/go_broker/pkg/payload"
 )
 
 func (b *Broker) getHeader(message *payload.Message) []kafka.Header {

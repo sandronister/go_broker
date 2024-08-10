@@ -1,4 +1,4 @@
-module github.com/sandronister/go-broker
+module github.com/sandronister/go_broker
 
 go 1.22.1
 
