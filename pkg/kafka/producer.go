@@ -29,6 +29,8 @@ func (b *Broker) Produce(message *payload.Message) error {
 		return err
 	}
 
+	p.Flush(1000)
+
 	p.Close()
 
 	return nil

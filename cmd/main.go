@@ -1,31 +1,36 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
-	"strconv"
 	"sync"
 
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/sandronister/go_broker/pkg/kafka"
 	"github.com/sandronister/go_broker/pkg/payload"
 	"github.com/sandronister/go_broker/pkg/ports"
 )
 
-func printMessage(message <-chan payload.Message) {
+func printMessage(message <-chan payload.Message, db *sql.DB) {
 	for msg := range message {
-		println("Message Received:")
-		println("TopicPartition: ", msg.TopicPartition)
-		println("Value: ", string(msg.Value))
-		println("Key: ", string(msg.Key))
-
-		for _, h := range msg.Headers {
-			fmt.Printf("Headers: Key %s, Value %s\n", h.Key, h.Value)
+		_, err := db.Exec("INSERT INTO messages (message) VALUES (?)", msg.Value)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
+			continue
 		}
+		fmt.Println("Successfully inserted message")
 	}
 }
 
 func main() {
 
 	broker := kafka.NewBroker("localhost", 9092)
+
+	db, err := sql.Open("sqlite3", "./database.db")
+
+	if err != nil {
+		panic(err)
+	}
 
 	waitGroup := sync.WaitGroup{}
 
@@ -34,18 +39,15 @@ func main() {
 	message := make(chan payload.Message)
 
 	for range 10 {
-		go printMessage(message)
+		go printMessage(message, db)
 	}
 
-	for i := range 3 {
-		go broker.Consume(ports.ConfigMap{
-			"topic":             "new-topic",
-			"group.id":          "my-group",
-			"auto.offset.reset": "earliest",
-			"partition":         strconv.Itoa(i),
-		}, message)
-
-	}
+	go broker.Consume(ports.ConfigMap{
+		"topic":             "omnicom.com",
+		"group.id":          "my-group",
+		"auto.offset.reset": "earliest",
+		"partition":         "0",
+	}, message)
 
 	waitGroup.Wait()
 }
