@@ -8,7 +8,7 @@ import (
 	"github.com/sandronister/go_broker/pkg/payload"
 )
 
-func (b *Broker) Produce(message *payload.Message) error {
+func (b *Broker) Produce(message *payload.Message, flush int) error {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": fmt.Sprintf("%s:%s", b.server, strconv.Itoa(b.port))})
 
 	if err != nil {
@@ -29,7 +29,7 @@ func (b *Broker) Produce(message *payload.Message) error {
 		return err
 	}
 
-	p.Flush(1000)
+	p.Flush(flush)
 
 	p.Close()
 
