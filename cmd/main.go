@@ -45,10 +45,12 @@ func main() {
 	}
 
 	go broker.Consume(ports.ConfigMap{
-		"topic":             "omnicom.com",
-		"group.id":          "my-group",
-		"auto.offset.reset": "earliest",
-		"partition":         "0",
+		"topic":                   "omnicom.com",
+		"group.id":                "my-group",
+		"auto.offset.reset":       "earliest",
+		"partition":               "0",
+		"auto.commit.enable":      "true",
+		"auto.commit.interval.ms": "1000",
 	}, message)
 
 	waitGroup.Wait()

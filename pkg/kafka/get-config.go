@@ -17,19 +17,21 @@ func (b *Broker) GetConfig(config ports.ConfigMap) *kafka.ConfigMap {
 		config["auto.offset.reset"] = "earliest"
 	}
 
-	if config["enable.auto.commit"] == "" {
-		config["enable.auto.commit"] = "true"
-	}
-
-	if config["auto.commit.interval.ms"] == "" {
-		config["auto.commit.interval.ms"] = "1000"
-	}
-
 	kafkaConfig := &kafka.ConfigMap{
 		"bootstrap.servers": fmt.Sprintf("%s:%s", b.server, strconv.Itoa(b.port)),
 		"group.id":          config["group.id"],
 		"auto.offset.reset": config["auto.offset.reset"],
 	}
+
+	if config["auto.commit.enable"] != "" {
+		kafkaConfig.SetKey("enable.auto.commit", true)
+	}
+
+	if config["auto.commit.interval.ms"] != "" {
+		kafkaConfig.SetKey("auto.commit.interval.ms", config["auto.commit.interval.ms"])
+	}
+
+	fmt.Println(kafkaConfig)
 
 	return kafkaConfig
 
