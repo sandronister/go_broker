@@ -13,12 +13,14 @@ import (
 
 func printMessage(message <-chan payload.Message, db *sql.DB) {
 	for msg := range message {
+
 		_, err := db.Exec("INSERT INTO messages (message) VALUES (?)", msg.Value)
 		if err != nil {
 			fmt.Printf("Error: %s\n", err)
 			continue
 		}
-		fmt.Println("Successfully inserted message")
+		fmt.Println("Successfully inserted message", string(msg.Value))
+
 	}
 }
 
