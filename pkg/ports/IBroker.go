@@ -6,5 +6,5 @@ type ConfigMap map[string]string
 
 type IBroker interface {
 	Consume(config ConfigMap, message chan<- payload.Message) error
-	Produce(message *payload.Message) error
+	Produce(message *payload.Message, flush int) error
 }
