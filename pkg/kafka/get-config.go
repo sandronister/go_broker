@@ -31,8 +31,6 @@ func (b *Broker) GetConfig(config ports.ConfigMap) *kafka.ConfigMap {
 		kafkaConfig.SetKey("auto.commit.interval.ms", config["auto.commit.interval.ms"])
 	}
 
-	fmt.Println(kafkaConfig)
-
 	return kafkaConfig
 
 }

@@ -39,9 +39,13 @@ func main() {
 	waitGroup.Add(1)
 
 	message := make(chan payload.Message)
+	message2 := make(chan payload.Message)
+	message3 := make(chan payload.Message)
 
-	for range 10 {
+	for range 100 {
 		go printMessage(message, db)
+		go printMessage(message2, db)
+		go printMessage(message3, db)
 	}
 
 	go broker.Consume(ports.ConfigMap{
@@ -52,6 +56,24 @@ func main() {
 		"auto.commit.enable":      "true",
 		"auto.commit.interval.ms": "1000",
 	}, message)
+
+	go broker.Consume(ports.ConfigMap{
+		"topic":                   "ruptela.com",
+		"group.id":                "my-group",
+		"auto.offset.reset":       "earliest",
+		"partition":               "0",
+		"auto.commit.enable":      "true",
+		"auto.commit.interval.ms": "1000",
+	}, message2)
+
+	go broker.Consume(ports.ConfigMap{
+		"topic":                   "sinocastle.com",
+		"group.id":                "my-group",
+		"auto.offset.reset":       "earliest",
+		"partition":               "0",
+		"auto.commit.enable":      "true",
+		"auto.commit.interval.ms": "1000",
+	}, message3)
 
 	waitGroup.Wait()
 }
