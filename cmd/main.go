@@ -12,22 +12,8 @@ func main() {
 
 	broker := brokerredis.NewBroker("localhost", 6379)
 
-	go func() {
-		for {
-			msg := &payload.Message{
-				TopicPartition: "myTopic",
-				Value:          []byte("Hello, Redis!"),
-			}
-			err := broker.Produce(msg, 2)
-			if err != nil {
-				fmt.Println("Erro ao produzir mensagem:", err)
-			}
-
-		}
-	}()
-
 	var ch = make(chan payload.Message)
-	err := broker.Consume(map[string]string{"topic": "myTopic"}, ch)
+	err := broker.Consume(map[string]string{"topic": "ruptela.com"}, ch)
 	if err != nil {
 		fmt.Println("Erro ao consumir mensagens:", err)
 		return

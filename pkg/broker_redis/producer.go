@@ -8,6 +8,6 @@ import (
 )
 
 func (b *Broker) Produce(message *payload.Message, flush int) error {
-	time.Sleep(2 * time.Second)
+	time.Sleep(time.Duration(flush) * time.Second)
 	return b.client.Publish(context.Background(), message.TopicPartition, message.Value).Err()
 }
