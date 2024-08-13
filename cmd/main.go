@@ -1,26 +1,12 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
 	brokerredis "github.com/sandronister/go_broker/pkg/broker_redis"
 	"github.com/sandronister/go_broker/pkg/payload"
 )
-
-func printMessage(message <-chan payload.Message, db *sql.DB) {
-	for msg := range message {
-
-		_, err := db.Exec("INSERT INTO messages (message) VALUES (?)", msg.Value)
-		if err != nil {
-			fmt.Printf("Error: %s\n", err)
-			continue
-		}
-		fmt.Println("Successfully inserted message", string(msg.Value))
-
-	}
-}
 
 func main() {
 
