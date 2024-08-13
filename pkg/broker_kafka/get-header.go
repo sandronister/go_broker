@@ -1,4 +1,4 @@
-package kafka
+package brokerkafka
 
 import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"

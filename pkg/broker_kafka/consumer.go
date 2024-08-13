@@ -1,4 +1,4 @@
-package kafka
+package brokerkafka
 
 import (
 	"github.com/sandronister/go_broker/pkg/payload"

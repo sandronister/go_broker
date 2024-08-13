@@ -1,4 +1,4 @@
-package kafka
+package brokerkafka
 
 type Broker struct {
 	server string

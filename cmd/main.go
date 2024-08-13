@@ -3,12 +3,10 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"sync"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/sandronister/go_broker/pkg/kafka"
+	brokerredis "github.com/sandronister/go_broker/pkg/broker_redis"
 	"github.com/sandronister/go_broker/pkg/payload"
-	"github.com/sandronister/go_broker/pkg/ports"
 )
 
 func printMessage(message <-chan payload.Message, db *sql.DB) {
@@ -26,54 +24,29 @@ func printMessage(message <-chan payload.Message, db *sql.DB) {
 
 func main() {
 
-	broker := kafka.NewBroker("localhost", 9092)
+	broker := brokerredis.NewBroker("localhost", 6379)
 
-	db, err := sql.Open("sqlite3", "./database.db")
+	go func() {
+		for {
+			msg := &payload.Message{
+				TopicPartition: "myTopic",
+				Value:          []byte("Hello, Redis!"),
+			}
+			err := broker.Produce(msg, 2)
+			if err != nil {
+				fmt.Println("Erro ao produzir mensagem:", err)
+			}
 
+		}
+	}()
+
+	ch, err := broker.Consumer("myTopic")
 	if err != nil {
-		panic(err)
+		fmt.Println("Erro ao consumir mensagens:", err)
+		return
 	}
 
-	waitGroup := sync.WaitGroup{}
-
-	waitGroup.Add(1)
-
-	message := make(chan payload.Message)
-	message2 := make(chan payload.Message)
-	message3 := make(chan payload.Message)
-
-	for range 100 {
-		go printMessage(message, db)
-		go printMessage(message2, db)
-		go printMessage(message3, db)
+	for msg := range ch {
+		fmt.Printf("Recebida mensagem: %s\n", string(msg.Value))
 	}
-
-	go broker.Consume(ports.ConfigMap{
-		"topic":                   "omnicom.com",
-		"group.id":                "my-group",
-		"auto.offset.reset":       "earliest",
-		"partition":               "0",
-		"auto.commit.enable":      "true",
-		"auto.commit.interval.ms": "1000",
-	}, message)
-
-	go broker.Consume(ports.ConfigMap{
-		"topic":                   "ruptela.com",
-		"group.id":                "my-group",
-		"auto.offset.reset":       "earliest",
-		"partition":               "0",
-		"auto.commit.enable":      "true",
-		"auto.commit.interval.ms": "1000",
-	}, message2)
-
-	go broker.Consume(ports.ConfigMap{
-		"topic":                   "sinocastle.com",
-		"group.id":                "my-group",
-		"auto.offset.reset":       "earliest",
-		"partition":               "0",
-		"auto.commit.enable":      "true",
-		"auto.commit.interval.ms": "1000",
-	}, message3)
-
-	waitGroup.Wait()
 }
