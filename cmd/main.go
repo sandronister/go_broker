@@ -26,7 +26,8 @@ func main() {
 		}
 	}()
 
-	ch, err := broker.Consumer("myTopic")
+	var ch = make(chan payload.Message)
+	err := broker.Consume(map[string]string{"topic": "myTopic"}, ch)
 	if err != nil {
 		fmt.Println("Erro ao consumir mensagens:", err)
 		return

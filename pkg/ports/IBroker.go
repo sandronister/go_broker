@@ -1,6 +1,14 @@
 package ports
 
-import "github.com/sandronister/go_broker/pkg/payload"
+import (
+	"errors"
+
+	"github.com/sandronister/go_broker/pkg/payload"
+)
+
+var (
+	ErrInvalidConfig = errors.New("invalid config")
+)
 
 type ConfigMap map[string]string
 
