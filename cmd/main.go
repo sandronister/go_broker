@@ -2,24 +2,39 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
-	brokerredis "github.com/sandronister/go_broker/pkg/broker_redis"
-	"github.com/sandronister/go_broker/pkg/payload"
+	"github.com/sandronister/go_broker/pkg/broker/factory"
+	"github.com/sandronister/go_broker/pkg/broker/types"
 )
 
 func main() {
 
-	broker := brokerredis.NewBroker("localhost", 6379)
+	broker := factory.NewBroker(factory.REDIS, "localhost", 6379)
 
-	var ch = make(chan payload.Message)
-	err := broker.Consume(map[string]string{"topic": "ruptela.com"}, ch)
-	if err != nil {
-		fmt.Println("Erro ao consumir mensagens:", err)
+	if broker == nil {
+		fmt.Println("erro ao criar broker")
 		return
 	}
 
-	for msg := range ch {
-		fmt.Printf("Recebida mensagem: %s\n", string(msg.Value))
+	var ch = make(chan types.Message)
+	err := broker.Consumer(&types.ConfigMap{"topic": "teste"}, ch)
+	if err != nil {
+		fmt.Println("erro ao consumir mensagens:", err)
+		return
 	}
+
+	i := 0
+	start := time.Now()
+	for msg := range ch {
+		fmt.Printf("recebida mensagem: %s\n", string(msg.Value))
+		i++
+		fmt.Printf("total de mensagens recebidas: %d\n", i)
+		if i == 333 {
+			break
+		}
+	}
+	elapsed := time.Since(start)
+	fmt.Printf("tempo total: %s\n", elapsed)
 }
