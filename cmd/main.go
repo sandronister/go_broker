@@ -11,7 +11,7 @@ import (
 
 func main() {
 
-	broker := factory.NewBroker(factory.REDIS, "localhost", 6379)
+	broker := factory.NewBroker(factory.REDIS, "localhost", "teste", 6379)
 
 	if broker == nil {
 		fmt.Println("erro ao criar broker")
