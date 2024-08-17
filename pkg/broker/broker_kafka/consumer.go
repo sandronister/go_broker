@@ -25,11 +25,10 @@ func (b *Broker) Consumer(config *types.ConfigMap, message chan<- types.Message)
 		}
 
 		message <- types.Message{
-			TopicPartition: *msg.TopicPartition.Topic,
-			Value:          msg.Value,
-			Key:            msg.Key,
-			Timestamp:      msg.Timestamp,
-			Headers:        listHeaders,
+			Value:     msg.Value,
+			Key:       msg.Key,
+			Timestamp: msg.Timestamp,
+			Headers:   listHeaders,
 		}
 
 	}

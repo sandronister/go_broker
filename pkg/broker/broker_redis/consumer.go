@@ -23,8 +23,7 @@ func (b *Broker) Consumer(config *types.ConfigMap, message chan<- types.Message)
 	go func() {
 		for msg := range ch {
 			message <- types.Message{
-				TopicPartition: msg.Channel,
-				Value:          []byte(msg.Payload),
+				Value: []byte(msg.Payload),
 			}
 		}
 	}()

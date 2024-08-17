@@ -8,19 +8,17 @@ import (
 	"github.com/sandronister/go_broker/pkg/broker/types"
 )
 
-func (b *Broker) Producer(message *types.Message, flush int) error {
+func (b *Broker) Producer(message *types.Message) error {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": fmt.Sprintf("%s:%s", b.host, strconv.Itoa(b.port))})
 
 	if err != nil {
 		return err
 	}
 
-	topic := message.TopicPartition
-
 	headers := b.getHeader(message)
 
 	err = p.Produce(&kafka.Message{
-		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: 0},
+		TopicPartition: kafka.TopicPartition{Topic: &b.topic, Partition: 0},
 		Value:          []byte(message.Value),
 		Headers:        headers,
 	}, nil)
@@ -28,8 +26,6 @@ func (b *Broker) Producer(message *types.Message, flush int) error {
 	if err != nil {
 		return err
 	}
-
-	p.Flush(flush)
 
 	p.Close()
 

@@ -15,16 +15,15 @@ type Header struct {
 }
 
 type Message struct {
-	TopicPartition string
-	Value          []byte
-	Key            []byte
-	Timestamp      time.Time
-	Headers        []Header
+	Value     []byte
+	Key       []byte
+	Timestamp time.Time
+	Headers   []Header
 }
 
 type ConfigMap map[string]string
 
 type IBroker interface {
 	Consumer(conf *ConfigMap, message chan<- Message) error
-	Producer(message *Message, flush int) error
+	Producer(message *Message) error
 }
