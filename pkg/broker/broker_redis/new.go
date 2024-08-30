@@ -15,7 +15,6 @@ type Broker struct {
 func NewBroker(server string, topic string, port int) types.IBroker {
 	client := redis.NewClient(&redis.Options{
 		Addr: fmt.Sprintf("%s:%d", server, port),
-		DB:   0,
 	})
 	return &Broker{
 		client: client,
