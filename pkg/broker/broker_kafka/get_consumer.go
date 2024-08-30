@@ -1,31 +1,24 @@
 package brokerkafka
 
 import (
-	"strconv"
-
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/sandronister/go_broker/pkg/broker/types"
 )
 
-func (b *Broker) getConsumer(config *types.ConfigMap) (*kafka.Consumer, error) {
+func (b *Broker) getConsumer(config *types.ConfigBroker) (*kafka.Consumer, error) {
 	c, err := kafka.NewConsumer(b.GetConfig(config))
 
 	if err != nil {
 		return nil, err
 	}
 
-	if (*config)["partition"] != "" {
-		topic := (*config)["topic"]
-		partition, err := strconv.Atoi((*config)["partition"])
+	if config.Partition != 0 {
 
-		if err != nil {
-			return nil, err
-		}
-		c.Assign([]kafka.TopicPartition{{Topic: &topic, Partition: int32(partition)}})
+		c.Assign([]kafka.TopicPartition{{Topic: &config.Topic, Partition: int32(config.Partition)}})
 	}
 
-	if (*config)["partition"] == "" {
-		err := c.SubscribeTopics([]string{(*config)["topic"]}, nil)
+	if config.Partition == 0 {
+		err := c.SubscribeTopics([]string{config.Topic}, nil)
 
 		if err != nil {
 			return nil, err

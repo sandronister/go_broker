@@ -2,7 +2,7 @@ package brokerkafka
 
 import "github.com/sandronister/go_broker/pkg/broker/types"
 
-func (b *Broker) Consumer(config *types.ConfigMap, message chan<- types.Message) error {
+func (b *Broker) Consumer(config *types.ConfigBroker, message chan<- types.Message) error {
 
 	c, err := b.getConsumer(config)
 

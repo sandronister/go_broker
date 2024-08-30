@@ -18,8 +18,12 @@ func main() {
 		return
 	}
 
+	config := &types.ConfigBroker{
+		Topic: "ruptela.com",
+	}
+
 	var ch = make(chan types.Message)
-	err := broker.Consumer(&types.ConfigMap{"topic": "teste"}, ch)
+	err := broker.Consumer(config, ch)
 	if err != nil {
 		fmt.Println("erro ao consumir mensagens:", err)
 		return

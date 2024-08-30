@@ -19,11 +19,20 @@ type Message struct {
 	Key       []byte
 	Timestamp time.Time
 	Headers   []Header
+	GroupID   string
 }
 
-type ConfigMap map[string]string
+type ConfigBroker struct {
+	Topic                string
+	GroupName            string
+	ConsumerName         string
+	AutoOffsetReset      string
+	EnableAutoCommit     bool
+	AutoCommitIntervalMS string
+	Partition            int
+}
 
 type IBroker interface {
-	Consumer(conf *ConfigMap, message chan<- Message) error
+	Consumer(conf *ConfigBroker, message chan<- Message) error
 	Producer(message *Message) error
 }

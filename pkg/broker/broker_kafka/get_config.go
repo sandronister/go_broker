@@ -8,27 +8,27 @@ import (
 	"github.com/sandronister/go_broker/pkg/broker/types"
 )
 
-func (b *Broker) GetConfig(config *types.ConfigMap) *kafka.ConfigMap {
-	if (*config)["group.id"] == "" {
-		(*config)["group.id"] = "default"
+func (b *Broker) GetConfig(config *types.ConfigBroker) *kafka.ConfigMap {
+	if config.GroupName == "" {
+		config.GroupName = "default"
 	}
 
-	if (*config)["auto.offset.reset"] == "" {
-		(*config)["auto.offset.reset"] = "earliest"
+	if config.AutoOffsetReset == "" {
+		config.AutoOffsetReset = "earliest"
 	}
 
 	kafkaConfig := &kafka.ConfigMap{
 		"bootstrap.servers": fmt.Sprintf("%s:%s", b.host, strconv.Itoa(b.port)),
-		"group.id":          (*config)["group.id"],
-		"auto.offset.reset": (*config)["auto.offset.reset"],
+		"group.id":          config.GroupName,
+		"auto.offset.reset": config.AutoOffsetReset,
 	}
 
-	if (*config)["auto.commit.enable"] != "" {
+	if !config.EnableAutoCommit {
 		kafkaConfig.SetKey("enable.auto.commit", true)
 	}
 
-	if (*config)["auto.commit.interval.ms"] != "" {
-		kafkaConfig.SetKey("auto.commit.interval.ms", (*config)["auto.commit.interval.ms"])
+	if config.AutoCommitIntervalMS != "" {
+		kafkaConfig.SetKey("auto.commit.interval.ms", config.AutoCommitIntervalMS)
 	}
 
 	return kafkaConfig
