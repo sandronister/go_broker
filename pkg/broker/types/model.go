@@ -23,7 +23,7 @@ type Message struct {
 }
 
 type ConfigBroker struct {
-	Topic                string
+	Topic                []string
 	GroupName            string
 	ConsumerName         string
 	AutoOffsetReset      string

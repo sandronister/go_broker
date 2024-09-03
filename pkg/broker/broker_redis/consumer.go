@@ -13,12 +13,12 @@ func (b *Broker) Consumer(config *types.ConfigBroker, message chan<- types.Messa
 		return types.ErrInvalidConfig
 	}
 
-	if config.Topic == "" {
+	if config.Topic == nil {
 		return types.ErrInvalidConfig
 	}
 
 	for {
-		res, err := b.client.BLPop(context.Background(), 0*time.Second, config.Topic).Result()
+		res, err := b.client.BLPop(context.Background(), 0*time.Second, config.Topic...).Result()
 		if err != nil {
 			fmt.Println("Erro ao ler item da fila:", err)
 			continue
@@ -26,7 +26,7 @@ func (b *Broker) Consumer(config *types.ConfigBroker, message chan<- types.Messa
 
 		message <- types.Message{
 			Value: []byte(res[1]),
+			Key:   []byte(res[0]),
 		}
 	}
-
 }

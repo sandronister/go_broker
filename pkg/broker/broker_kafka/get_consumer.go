@@ -14,11 +14,19 @@ func (b *Broker) getConsumer(config *types.ConfigBroker) (*kafka.Consumer, error
 
 	if config.Partition != 0 {
 
-		c.Assign([]kafka.TopicPartition{{Topic: &config.Topic, Partition: int32(config.Partition)}})
+		for _, topic := range config.Topic {
+			err := c.Assign([]kafka.TopicPartition{
+				{Topic: &topic, Partition: int32(config.Partition)},
+			})
+
+			if err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	if config.Partition == 0 {
-		err := c.SubscribeTopics([]string{config.Topic}, nil)
+		err := c.SubscribeTopics(config.Topic, nil)
 
 		if err != nil {
 			return nil, err
