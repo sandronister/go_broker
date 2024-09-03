@@ -10,7 +10,7 @@ import (
 
 func read(info <-chan types.Message) {
 	for msg := range info {
-		fmt.Printf("recebida mensagem: %s\n", string(msg.Value))
+		fmt.Printf("recebida mensagem: %s no topico %s \n", string(msg.Value), string(msg.Key))
 	}
 
 }
@@ -25,7 +25,7 @@ func main() {
 	}
 
 	config := &types.ConfigBroker{
-		Topic: "ruptela.com",
+		Topic: []string{"ruptela.com", "ominicom.com"},
 	}
 
 	var ch = make(chan types.Message)
