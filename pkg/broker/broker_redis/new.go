@@ -9,15 +9,13 @@ import (
 
 type Broker struct {
 	client *redis.Client
-	Topic  string
 }
 
-func NewBroker(server string, topic string, port int) types.IBroker {
+func NewBroker(server string, port int) types.IBroker {
 	client := redis.NewClient(&redis.Options{
 		Addr: fmt.Sprintf("%s:%d", server, port),
 	})
 	return &Broker{
 		client: client,
-		Topic:  topic,
 	}
 }

@@ -15,6 +15,7 @@ type Header struct {
 }
 
 type Message struct {
+	Topic     string
 	Value     []byte
 	Key       []byte
 	Timestamp time.Time

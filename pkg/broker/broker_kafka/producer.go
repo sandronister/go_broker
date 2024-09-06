@@ -18,7 +18,7 @@ func (b *Broker) Producer(message *types.Message) error {
 	headers := b.getHeader(message)
 
 	err = p.Produce(&kafka.Message{
-		TopicPartition: kafka.TopicPartition{Topic: &b.topic, Partition: 0},
+		TopicPartition: kafka.TopicPartition{Topic: &message.Topic, Partition: 0},
 		Value:          []byte(message.Value),
 		Headers:        headers,
 	}, nil)

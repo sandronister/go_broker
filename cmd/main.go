@@ -17,7 +17,7 @@ func read(info <-chan types.Message) {
 
 func main() {
 
-	broker := factory.NewBroker(factory.REDIS, "localhost", "ruptela.com", 6379)
+	broker := factory.NewBroker(factory.REDIS, "localhost", 6379)
 
 	if broker == nil {
 		fmt.Println("erro ao criar broker")
@@ -25,7 +25,7 @@ func main() {
 	}
 
 	config := &types.ConfigBroker{
-		Topic: []string{"ruptela.com", "ominicom.com"},
+		Topic: []string{"bananinha", "abobrinha"},
 	}
 
 	var ch = make(chan types.Message)
@@ -38,5 +38,6 @@ func main() {
 		fmt.Println("erro ao consumir mensagens:", err)
 		return
 	}
+	fmt.Println("esperando mensagens")
 
 }

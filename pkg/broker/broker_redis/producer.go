@@ -7,5 +7,5 @@ import (
 )
 
 func (b *Broker) Producer(message *types.Message) error {
-	return b.client.LPush(context.Background(), b.Topic, message).Err()
+	return b.client.LPush(context.Background(), message.Topic, message).Err()
 }
