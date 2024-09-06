@@ -2,6 +2,7 @@ package brokerredis
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -24,9 +25,11 @@ func (b *Broker) Consumer(config *types.ConfigBroker, message chan<- types.Messa
 			continue
 		}
 
-		message <- types.Message{
-			Value: []byte(res[1]),
-			Key:   []byte(res[0]),
-		}
+		var tmp types.Message
+
+		json.Unmarshal([]byte(res[1]), &tmp)
+
+		message <- tmp
+
 	}
 }

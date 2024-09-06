@@ -10,7 +10,7 @@ import (
 
 func read(info <-chan types.Message) {
 	for msg := range info {
-		fmt.Printf("recebida mensagem: %s no topico %s \n", string(msg.Value), string(msg.Key))
+		fmt.Printf("recebida mensagem: %s no topico %s \n", string(msg.Value), string(msg.Topic))
 	}
 
 }
