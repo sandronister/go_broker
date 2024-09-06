@@ -15,12 +15,12 @@ type Header struct {
 }
 
 type Message struct {
-	Topic     string
-	Value     []byte
-	Key       []byte
-	Timestamp time.Time
-	Headers   []Header
-	GroupID   string
+	Topic     string    `json:"topic"`
+	Value     []byte    `json:"value"`
+	Key       []byte    `json:"key"`
+	Timestamp time.Time `json:"timestamp"`
+	Headers   []Header  `json:"headers"`
+	GroupID   string    `json:"group_id"`
 }
 
 type ConfigBroker struct {
