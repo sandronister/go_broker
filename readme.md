@@ -25,8 +25,8 @@ package main
 
 import (
     "log"
-    "github.com/seu-usuario/go_broker/pkg/broker/factory"
-    "github.com/seu-usuario/go_broker/pkg/broker/types"
+    "github.com/sandronister/go_broker/pkg/broker/factory"
+    "github.com/sandronister/go_broker/pkg/broker/types"
 )
 
 func main() {
