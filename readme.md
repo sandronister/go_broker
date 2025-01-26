@@ -14,7 +14,7 @@ Para instalar o projeto Go Broker como uma biblioteca em seu projeto Go, siga os
 No diretório do seu projeto, execute o comando abaixo para adicionar o módulo Go Broker como uma dependência:
 
 ```go 
-go get github.com/seu-usuario/go_broker
+go get github.com/sandronister/go_broker
 ````
 
 ## Exemplo
@@ -25,8 +25,8 @@ package main
 
 import (
     "log"
-    "github.com/seu-usuario/go_broker/pkg/broker/factory"
-    "github.com/seu-usuario/go_broker/pkg/broker/types"
+    "github.com/sandronister/go_broker/pkg/broker/factory"
+    "github.com/sandronister/go_broker/pkg/broker/types"
 )
 
 func main() {
