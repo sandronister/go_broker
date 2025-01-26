@@ -1,6 +1,7 @@
 package factory
 
 import (
+	"errors"
 	"os"
 	"strconv"
 
@@ -16,6 +17,23 @@ const (
 
 var brokerConnector types.IBroker
 
+func validEnv() error {
+
+	if os.Getenv("BROKER_KIND") == "" {
+		return errors.New("BROKER_KIND is not set")
+	}
+
+	if os.Getenv("BROKER_HOST") == "" {
+		return errors.New("BROKER_HOST is not set")
+	}
+
+	if os.Getenv("BROKER_PORT") == "" {
+		return errors.New("BROKER_PORT is not set")
+	}
+
+	return nil
+}
+
 func NewBroker(kind string, host string, port int) types.IBroker {
 	switch kind {
 	case KAFKA:
@@ -26,11 +44,17 @@ func NewBroker(kind string, host string, port int) types.IBroker {
 	return nil
 }
 
-func GetBroker() types.IBroker {
+func GetBroker() (types.IBroker, error) {
+
+	if err := validEnv(); err != nil {
+		return nil, err
+	}
+
 	if brokerConnector == nil {
 		port, _ := strconv.Atoi(os.Getenv("BROKER_PORT"))
 
 		brokerConnector = NewBroker(os.Getenv("BROKER_KIND"), os.Getenv("BROKER_HOST"), port)
 	}
-	return brokerConnector
+
+	return brokerConnector, nil
 }

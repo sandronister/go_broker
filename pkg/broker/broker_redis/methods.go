@@ -9,7 +9,15 @@ import (
 	"github.com/sandronister/go_broker/pkg/broker/types"
 )
 
-func (b *Broker) Consumer(config *types.ConfigBroker, message chan<- types.Message) error {
+func (b *Broker) Publish(message *types.Message) error {
+	messageByte, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	return b.client.LPush(context.Background(), message.Topic, messageByte).Err()
+}
+
+func (b *Broker) ListenToQueue(config *types.ConfigBroker, message chan<- types.Message) error {
 	if config == nil {
 		return types.ErrInvalidConfig
 	}

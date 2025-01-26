@@ -34,6 +34,6 @@ type ConfigBroker struct {
 }
 
 type IBroker interface {
-	Consumer(conf *ConfigBroker, message chan<- Message) error
-	Producer(message *Message) error
+	ListenToQueue(conf *ConfigBroker, message chan<- Message) error
+	Publish(message *Message) error
 }
